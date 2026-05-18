@@ -141,3 +141,22 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vite/
+
+# Environment variables
+.env
+
+# Dependencies
+node_modules
+
+# Build files
+dist
+build
+.next
+coverage
+
+# Logs
+npm-debug.log
+yarn-error.log
+
+# OS files
+.DS_Store
