@@ -1,0 +1,17 @@
+name: CI Pipeline
+
+on:
+  push:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  docker-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check Docker Compose config
+        run: docker compose config
