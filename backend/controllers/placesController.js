@@ -1,4 +1,4 @@
-const pool = require('../config/database');
+const pool = require('../database');
 
 // GET /api/places?regionId=1&type=yurt
 const getAllPlaces = async (req, res, next) => {

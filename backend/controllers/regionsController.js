@@ -1,4 +1,4 @@
-const pool = require('../config/database');
+const pool = require('../database');
 
 // GET /api/regions
 const getAllRegions = async (req, res, next) => {

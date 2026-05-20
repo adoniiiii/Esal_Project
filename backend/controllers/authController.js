@@ -1,26 +1,35 @@
-const pool = require('../config/database');
+const pool = require('../database');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 // POST /api/auth/register
 const register = async (req, res, next) => {
   try {
+    console.log('=== REGISTER REQUEST ===');
+    console.log('Request body:', req.body);
+    console.log('JWT_SECRET exists:', !!process.env.JWT_SECRET);
+    
     const { email, password, full_name, phone } = req.body;
     
     if (!email || !password || !full_name) {
+      console.log('Missing fields:', { email: !!email, password: !!password, full_name: !!full_name });
       return res.status(400).json({ error: 'Email, password and full name are required' });
     }
     
     // Check if user exists
     const existingUser = await pool.query('SELECT id FROM users WHERE email = $1', [email]);
     if (existingUser.rows.length > 0) {
+      console.log('User already exists:', email);
       return res.status(400).json({ error: 'User already exists' });
     }
     
+    console.log('Hashing password...');
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
+    console.log('Password hashed successfully');
     
     // Create user
+    console.log('Creating user with:', { email, full_name, phone });
     const result = await pool.query(
       `INSERT INTO users (email, password_hash, full_name, phone) 
        VALUES ($1, $2, $3, $4) RETURNING id, email, full_name, phone, created_at`,
@@ -28,6 +37,7 @@ const register = async (req, res, next) => {
     );
     
     const user = result.rows[0];
+    console.log('User created:', user.id);
     
     // Generate token
     const token = jwt.sign(
@@ -36,6 +46,7 @@ const register = async (req, res, next) => {
       { expiresIn: '30d' }
     );
     
+    console.log('Token generated, sending response');
     res.status(201).json({
       token,
       user: {
@@ -46,6 +57,9 @@ const register = async (req, res, next) => {
       }
     });
   } catch (error) {
+    console.error('=== REGISTER ERROR ===');
+    console.error('Error message:', error.message);
+    console.error('Error stack:', error.stack);
     next(error);
   }
 };
@@ -53,6 +67,9 @@ const register = async (req, res, next) => {
 // POST /api/auth/login
 const login = async (req, res, next) => {
   try {
+    console.log('=== LOGIN REQUEST ===');
+    console.log('Request body:', req.body);
+    
     const { email, password } = req.body;
     
     if (!email || !password) {
@@ -94,6 +111,9 @@ const login = async (req, res, next) => {
       }
     });
   } catch (error) {
+    console.error('=== LOGIN ERROR ===');
+    console.error('Error message:', error.message);
+    console.error('Error stack:', error.stack);
     next(error);
   }
 };
