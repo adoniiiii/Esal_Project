@@ -1,20 +1,26 @@
-// Login form with sessionStorage mock auth
 import { useState } from "react";
+import { auth } from "../services/api";
 
 const Login = ({ onLogin, onSwitchToRegister }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!email || !password) {
-      setError("Fill all fields");
-      return;
+    setError("");
+    setLoading(true);
+
+    try {
+      const data = await auth.login({ email, password });
+      localStorage.setItem("token", data.token);
+      onLogin();
+    } catch (err) {
+      setError(err.message || "Login failed");
+    } finally {
+      setLoading(false);
     }
-    sessionStorage.setItem("token", "fake-token");
-    sessionStorage.setItem("user", email);
-    onLogin();
   };
 
   return (
@@ -37,7 +43,9 @@ const Login = ({ onLogin, onSwitchToRegister }) => {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          <button type="submit">Sign In</button>
+          <button type="submit" disabled={loading}>
+            {loading ? "Loading..." : "Sign In"}
+          </button>
         </form>
         <p>
           No account?{" "}
@@ -53,4 +61,5 @@ const Login = ({ onLogin, onSwitchToRegister }) => {
     </div>
   );
 };
+
 export default Login;

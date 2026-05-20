@@ -1,22 +1,27 @@
-// Register form with sessionStorage mock auth
 import { useState } from "react";
+import { auth } from "../services/api";
 
 const Register = ({ onRegister, onSwitchToLogin }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!name || !email || !password) {
-      setError("Fill all fields");
-      return;
+    setError("");
+    setLoading(true);
+
+    try {
+      const data = await auth.register({ full_name: name, email, password });
+      localStorage.setItem("token", data.token);
+      onRegister();
+    } catch (err) {
+      setError(err.message || "Registration failed");
+    } finally {
+      setLoading(false);
     }
-    sessionStorage.setItem("token", "fake-token");
-    sessionStorage.setItem("user", email);
-    sessionStorage.setItem("userName", name);
-    onRegister();
   };
 
   return (
@@ -46,7 +51,9 @@ const Register = ({ onRegister, onSwitchToLogin }) => {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          <button type="submit">Create Account</button>
+          <button type="submit" disabled={loading}>
+            {loading ? "Loading..." : "Create Account"}
+          </button>
         </form>
         <p>
           Have an account?{" "}
@@ -58,4 +65,5 @@ const Register = ({ onRegister, onSwitchToLogin }) => {
     </div>
   );
 };
+
 export default Register;

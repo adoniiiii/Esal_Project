@@ -1,4 +1,3 @@
-// Main app with auth state and routing
 import { useState, useEffect } from "react";
 import YurtList from "./components/YurtList";
 import Login from "./components/Login";
@@ -11,8 +10,10 @@ function App() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const token = sessionStorage.getItem("token");
-    if (token) setIsAuthenticated(true);
+    const token = localStorage.getItem("token");
+    if (token) {
+      setIsAuthenticated(true);
+    }
     setLoading(false);
   }, []);
 
@@ -20,11 +21,13 @@ function App() {
   const handleRegister = () => setIsAuthenticated(true);
 
   const handleLogout = () => {
-    sessionStorage.clear();
+    localStorage.removeItem("token");
     setIsAuthenticated(false);
   };
 
-  if (loading) return <div className="loading-container">Loading...</div>;
+  if (loading) {
+    return <div className="loading-container">Loading...</div>;
+  }
 
   if (!isAuthenticated) {
     return (
