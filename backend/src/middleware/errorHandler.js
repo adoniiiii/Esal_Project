@@ -1,6 +1,13 @@
-function errorHandler(err, req, res, next) {
-    console.error(err.message);
-    res.status(400).json({ error: err.message });
-  }
+const errorHandler = (err, req, res, next) => {
+    console.error('Error:', err.message);
+    
+    const statusCode = err.statusCode || 500;
+    
+    res.status(statusCode).json({
+      success: false,
+      error: err.message || 'Internal server error',
+      timestamp: new Date().toISOString()
+    });
+  };
   
   module.exports = errorHandler;
