@@ -1,20 +1,37 @@
 services:
   db:
     image: postgres:16
-    container_name: es_al
+    container_name: esal
     restart: always
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: es_al
+      POSTGRES_DB: esal
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    
+
+  backend:
+    build: ./backend
+    container_name: esal_backend
+    restart: always
+    ports:
+      - "5000:5000"
+    environment:
+      PORT: 5000
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      DB_NAME: esal
+      JWT_SECRET: change_this_secret
+    depends_on:
+      - db
+
   frontend:
     build: ./frontend
-    container_name: es_al_frontend
+    container_name: esal_frontend
     restart: always
     ports:
       - "5173:5173"
