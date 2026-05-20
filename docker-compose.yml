@@ -25,6 +25,7 @@ services:
       DB_USER: postgres
       DB_PASSWORD: postgres
       DB_NAME: esal
+      JWT_SECRET: change_this_secret
     depends_on:
       - db
 
