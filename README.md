@@ -1,6 +1,6 @@
 # Esal_Project
 
-Booking platform for yurts and traditional rest camps across Kyrgyzstan — built for international tourists.
+Booking platform for yurts and traditional rest camps across Kyrgyzstan — built for tourists.
 Es Al is a web service that helps foreign tourists find and book authentic yurts and topchan camps in the regions of Kyrgyzstan. The platform includes an AI chatbot that answers questions in English about locations, amenities, and travel tips.
 
 ## Features
