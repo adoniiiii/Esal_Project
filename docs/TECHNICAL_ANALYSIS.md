@@ -47,7 +47,7 @@ graph TD
   U[Турист / браузер] -->|HTTPS| FE
   FE[Frontend React.js] -->|REST API| BE
   BE[Backend Node.js Express] --> DB[(PostgreSQL)]
-  BE --> AI[OpenAI API GPT-4o]
+  BE --> AI[GROQ API]
   DB --> BE
   AI --> BE
   BE -->|JSON| FE
