@@ -1,59 +1,67 @@
-// Mock API - no real backend calls
+// Backend API client
 const API_BASE = 'http://localhost:5000/api';
 
-// Mock data
-const mockYurts = [
-  { id: 1, name: "Ak-Say Yurt Camp", location: "Son-Kol Lake", price: 2500, capacity: 4, type: "yurt", image: "https://images.pexels.com/photos/258154/pexels-photo-258154.jpeg?w=400&h=300&fit=crop" },
-  { id: 2, name: "Jyldyz Jailoo", location: "Issyk-Kol Region", price: 3000, capacity: 5, type: "yurt", image: "https://images.pexels.com/photos/164558/pexels-photo-164558.jpeg?w=400&h=300&fit=crop" },
-  { id: 3, name: "Ala-Archa Yurt", location: "Chuy Valley", price: 2000, capacity: 3, type: "yurt", image: "https://images.pexels.com/photos/266498/pexels-photo-266498.jpeg?w=400&h=300&fit=crop" },
-];
+// Helper function for all API requests
+const request = async (endpoint, options = {}) => {
+  const token = localStorage.getItem('token');
+  const headers = {
+    'Content-Type': 'application/json',
+    ...(token && { 'Authorization': `Bearer ${token}` })
+  };
+  
+  const response = await fetch(`${API_BASE}${endpoint}`, { ...options, headers });
+  const data = await response.json();
+  
+  if (!response.ok) {
+    throw new Error(data.error || data.message || 'Request failed');
+  }
+  return data;
+};
 
-// Mock auth
-let mockToken = null;
-
+// Auth endpoints
 export const auth = {
-  register: async (userData) => {
-    mockToken = "mock-jwt-token";
-    localStorage.setItem("token", mockToken);
-    return { token: mockToken, user: { email: userData.email, full_name: userData.full_name } };
-  },
-  login: async (credentials) => {
-    mockToken = "mock-jwt-token";
-    localStorage.setItem("token", mockToken);
-    return { token: mockToken, user: { email: credentials.email } };
-  }
+  register: (userData) => request('/auth/register', { 
+    method: 'POST', 
+    body: JSON.stringify(userData) 
+  }),
+  login: (credentials) => request('/auth/login', { 
+    method: 'POST', 
+    body: JSON.stringify(credentials) 
+  })
 };
 
+// Places endpoints
 export const places = {
-  getAll: async (params = {}) => {
-    return mockYurts.filter(p => !params.type || p.type === params.type);
+  getAll: (params = {}) => {
+    const queryParams = new URLSearchParams();
+    if (params.type) queryParams.append('type', params.type);
+    if (params.search) queryParams.append('search', params.search);
+    if (params.regionId) queryParams.append('regionId', params.regionId);
+    const query = queryParams.toString();
+    return request(`/places${query ? `?${query}` : ''}`);
   },
-  getById: async (id) => mockYurts.find(p => p.id === parseInt(id)),
+  getById: (id) => request(`/places/${id}`),
+  getRegions: () => request('/regions'),
+  getAvailability: (id, from, to) => request(`/places/${id}/availability?from=${from}&to=${to}`)
 };
 
-// Mock bookings stored in localStorage
-const getMockBookings = () => {
-  const saved = localStorage.getItem("mockBookings");
-  return saved ? JSON.parse(saved) : [];
-};
-
-const saveMockBookings = (bookings) => {
-  localStorage.setItem("mockBookings", JSON.stringify(bookings));
-};
-
+// Bookings endpoints
 export const bookings = {
-  create: async (bookingData) => {
-    const newBooking = { ...bookingData, id: Date.now(), created_at: new Date().toISOString() };
-    const existing = getMockBookings();
-    saveMockBookings([...existing, newBooking]);
-    return newBooking;
-  },
-  getMyBookings: async () => {
-    return getMockBookings();
-  },
-  cancel: async (id) => {
-    const existing = getMockBookings();
-    saveMockBookings(existing.filter(b => b.id !== parseInt(id)));
-    return { success: true };
-  }
+  create: (bookingData) => request('/bookings', { 
+    method: 'POST', 
+    body: JSON.stringify(bookingData) 
+  }),
+  getMyBookings: () => request('/bookings/users/me/bookings'),
+  cancel: (id) => request(`/bookings/${id}`, { method: 'DELETE' })
 };
+
+// Chatbot endpoint
+export const chatbot = {
+  sendMessage: (message) => request('/chatbot/message', { 
+    method: 'POST', 
+    body: JSON.stringify({ message }) 
+  })
+};
+
+// Health check
+export const health = () => request('/health');
