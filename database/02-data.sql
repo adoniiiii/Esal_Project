@@ -74,19 +74,6 @@ COPY public.places (id, name, description, type, region_id, location_text, latit
 
 
 --
--- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY public.users (id, email, password_hash, full_name, phone, created_at) FROM stdin;
-1	nazarovagulaiym45@gmail.com	$2b$10$w6OAoybLvxnBxbkL7cZ4iOLgfQRB0RJuwRxK5lJ.Hzm8OKgmfNgYu	Nazarova Gulaiym	\N	2026-05-20 16:42:06.869498
-2	qwerty@gmail.com	12345678	qwerty	996704919571	2026-05-20 17:27:09.259271
-3	test@example.com	$2b$10$Ua5xlbLx4cHXtV8fzElQneaRR6FH2TEdtd.cEIlh0CPgD2QwFlSOW	Test User	\N	2026-05-20 18:20:33.932619
-4	test2@example.com	$2b$10$q.ZORbbVVOoiSJihlgPK..jDmBgf/335jj0VotIgVYUIMNaBYiQJu	Test User 2 	\N	2026-05-20 18:24:10.850202
-5	asdfg@gmail.com	$2b$10$QWDoWY35a6M/8r1VJS0Iv.2yHcV5iALr3JnDPSrxHIq4Bx68h.Xe6	asdfg 	\N	2026-05-20 22:55:07.530707
-\.
-
-
---
 -- Data for Name: bookings; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
