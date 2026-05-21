@@ -15,4 +15,9 @@ Tech Stack
 LayerTechnologyFrontendReactBackendNode.js (Express)DatabasePostgreSQLAI ChatbotOpenAI API (GPT-4o)AuthenticationJWT + bcryptDeploymentVercel (frontend) · Railway (backend)CI/CDGitHub Actions
 
 Team
-Project Manager[Zhansaia Asanova]Backend Developer[Gulaiym Nazarova]Frontend Developer[Burulai Mamatusmanova]AI Engineer[Zakhida Nasirdinova]DevSecOps[Aidai Kazakbaeva]
+
+Project Manager[Zhansaia Asanova]
+Backend Developer[Gulaiym Nazarova]
+Frontend Developer[Burulai Mamatusmanova]
+AI Engineer[Zakhida Nasirdinova]
+DevSecOps[Aidai Kazakbaeva]
