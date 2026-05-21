@@ -11,13 +11,11 @@ const Login = ({ onLogin, onSwitchToRegister }) => {
     e.preventDefault();
     setError("");
     setLoading(true);
-
     try {
-      const data = await auth.login({ email, password });
-      localStorage.setItem("token", data.token);
+      await auth.login({ email, password });
       onLogin();
     } catch (err) {
-      setError(err.message || "Login failed");
+      setError(err.message || "Login failed. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -26,12 +24,13 @@ const Login = ({ onLogin, onSwitchToRegister }) => {
   return (
     <div className="auth-container">
       <div className="auth-card">
-        <h2>Login</h2>
+        <h2>Welcome back</h2>
+        <p className="auth-sub">Sign in to manage your yurt bookings</p>
         {error && <div className="auth-error">{error}</div>}
         <form onSubmit={handleSubmit}>
           <input
             type="email"
-            placeholder="Email"
+            placeholder="Email address"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
@@ -44,7 +43,7 @@ const Login = ({ onLogin, onSwitchToRegister }) => {
             required
           />
           <button type="submit" disabled={loading}>
-            {loading ? "Loading..." : "Sign In"}
+            {loading ? "Signing in..." : "Sign in"}
           </button>
         </form>
         <p>
@@ -54,7 +53,7 @@ const Login = ({ onLogin, onSwitchToRegister }) => {
             onClick={onSwitchToRegister}
             className="link-btn"
           >
-            Register
+            Create one
           </button>
         </p>
       </div>

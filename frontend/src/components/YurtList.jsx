@@ -1,24 +1,20 @@
 import { useState, useEffect } from "react";
 import YurtCard from "./YurtCard";
 import { places } from "../services/api";
+import BookingModal from "./BookingModal";
 
 const YurtList = () => {
   const [yurts, setYurts] = useState([]);
   const [search, setSearch] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const [selectedPlace, setSelectedPlace] = useState(null);
 
   useEffect(() => {
     const fetchYurts = async () => {
-      try {
-        const data = await places.getAll({ type: "yurt" });
-        setYurts(data);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
+      const data = await places.getAll({ type: "yurt" });
+      setYurts(data);
+      setLoading(false);
     };
     fetchYurts();
   }, []);
@@ -33,7 +29,6 @@ const YurtList = () => {
   });
 
   if (loading) return <div className="loading-container">Loading yurts...</div>;
-  if (error) return <div className="error-container">Error: {error}</div>;
 
   return (
     <div>
@@ -56,9 +51,16 @@ const YurtList = () => {
       ) : (
         <div className="yurt-grid">
           {filtered.map((y) => (
-            <YurtCard key={y.id} yurt={y} onClick={() => alert(y.id)} />
+            <YurtCard key={y.id} yurt={y} onBook={setSelectedPlace} />
           ))}
         </div>
+      )}
+      {selectedPlace && (
+        <BookingModal
+          place={selectedPlace}
+          onClose={() => setSelectedPlace(null)}
+          onBooked={() => setSelectedPlace(null)}
+        />
       )}
     </div>
   );

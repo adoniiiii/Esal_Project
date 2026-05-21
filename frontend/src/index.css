@@ -3,7 +3,6 @@ body {
   font-family: system-ui, sans-serif;
   background: #f4f1ea;
 }
-
 #root {
   min-height: 100vh;
   display: flex;

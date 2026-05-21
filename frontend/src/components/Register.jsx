@@ -12,13 +12,11 @@ const Register = ({ onRegister, onSwitchToLogin }) => {
     e.preventDefault();
     setError("");
     setLoading(true);
-
     try {
-      const data = await auth.register({ full_name: name, email, password });
-      localStorage.setItem("token", data.token);
+      await auth.register({ full_name: name, email, password });
       onRegister();
     } catch (err) {
-      setError(err.message || "Registration failed");
+      setError(err.message || "Registration failed. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -27,7 +25,8 @@ const Register = ({ onRegister, onSwitchToLogin }) => {
   return (
     <div className="auth-container">
       <div className="auth-card">
-        <h2>Register</h2>
+        <h2>Join YurtBook</h2>
+        <p className="auth-sub">Create your account to start booking</p>
         {error && <div className="auth-error">{error}</div>}
         <form onSubmit={handleSubmit}>
           <input
@@ -39,26 +38,27 @@ const Register = ({ onRegister, onSwitchToLogin }) => {
           />
           <input
             type="email"
-            placeholder="Email"
+            placeholder="Email address"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
           />
           <input
             type="password"
-            placeholder="Password"
+            placeholder="Password (min. 6 characters)"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            minLength={6}
             required
           />
           <button type="submit" disabled={loading}>
-            {loading ? "Loading..." : "Create Account"}
+            {loading ? "Creating account..." : "Create account"}
           </button>
         </form>
         <p>
-          Have an account?{" "}
+          Already have an account?{" "}
           <button type="button" onClick={onSwitchToLogin} className="link-btn">
-            Login
+            Sign in
           </button>
         </p>
       </div>
