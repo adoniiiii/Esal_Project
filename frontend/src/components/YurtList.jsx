@@ -8,27 +8,39 @@ const YurtList = () => {
   const [search, setSearch] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
   const [selectedPlace, setSelectedPlace] = useState(null);
 
   useEffect(() => {
     const fetchYurts = async () => {
-      const data = await places.getAll({ type: "yurt" });
-      setYurts(data);
-      setLoading(false);
+      try {
+        const data = await places.getAll({ type: "yurt" });
+        setYurts(data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
     };
     fetchYurts();
   }, []);
 
+  // Filter frontend-side (temporary, backend filtering coming soon)
   const filtered = yurts.filter((y) => {
     const matchSearch =
+      search === "" ||
       y.name.toLowerCase().includes(search.toLowerCase()) ||
       (y.location_text &&
-        y.location_text.toLowerCase().includes(search.toLowerCase()));
-    const matchPrice = maxPrice === "" || y.price <= parseInt(maxPrice);
+        y.location_text.toLowerCase().includes(search.toLowerCase())) ||
+      (y.region_name &&
+        y.region_name.toLowerCase().includes(search.toLowerCase()));
+    const matchPrice =
+      maxPrice === "" || (y.price || y.pricePerNight) <= parseInt(maxPrice);
     return matchSearch && matchPrice;
   });
 
   if (loading) return <div className="loading-container">Loading yurts...</div>;
+  if (error) return <div className="error-container">Error: {error}</div>;
 
   return (
     <div>
