@@ -41,17 +41,29 @@ const request = async (endpoint, options = {}) => {
     throw err;
   }
 };
-
 // Auth endpoints
 export const auth = {
   register: (userData) => request('/auth/register', { 
     method: 'POST', 
     body: JSON.stringify(userData) 
   }),
-  login: (credentials) => request('/auth/login', { 
-    method: 'POST', 
-    body: JSON.stringify(credentials) 
-  })
+  
+  login: async (credentials) => {
+    const data = await request('/auth/login', { 
+      method: 'POST', 
+      body: JSON.stringify(credentials) 
+    });
+    
+    // Сохраняем токен в localStorage после успешного входа
+    if (data && data.token) {
+      localStorage.setItem('token', data.token);
+      console.log('✅ Token saved to localStorage');
+    } else {
+      console.warn('⚠️ No token in login response', data);
+    }
+    
+    return data;
+  }
 };
 
 // Places endpoints
