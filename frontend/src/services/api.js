@@ -30,18 +30,31 @@ export const auth = {
   })
 };
 
-// Places endpoints
+// Places endpoints (supports yurt, topchan, and more)
 export const places = {
+  // Get all places with optional filters
   getAll: (params = {}) => {
     const queryParams = new URLSearchParams();
-    if (params.type) queryParams.append('type', params.type);
+    if (params.type) queryParams.append('type', params.type);     // 'yurt' or 'topchan'
     if (params.search) queryParams.append('search', params.search);
     if (params.regionId) queryParams.append('regionId', params.regionId);
     const query = queryParams.toString();
     return request(`/places${query ? `?${query}` : ''}`);
   },
+  
+  // Get yurts only (convenience method)
+  getYurts: () => request('/places?type=yurt'),
+  
+  // Get topchans only (convenience method)
+  getTopchans: () => request('/places?type=topchan'),
+  
+  // Get single place by ID
   getById: (id) => request(`/places/${id}`),
+  
+  // Get all regions
   getRegions: () => request('/regions'),
+  
+  // Check availability for a place
   getAvailability: (id, from, to) => request(`/places/${id}/availability?from=${from}&to=${to}`)
 };
 
