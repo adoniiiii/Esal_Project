@@ -4,42 +4,18 @@ const API_BASE = 'http://localhost:5000/api';
 // Helper function for all API requests
 const request = async (endpoint, options = {}) => {
   const token = localStorage.getItem('token');
-  
-  // Debug log (F12 -> Console)
-  console.log(`🌐 Request to ${endpoint}, Token: ${token ? "Present ✅" : "MISSING ❌"}`);
-
   const headers = {
     'Content-Type': 'application/json',
-  };
-
-  if (token) {
-    headers['Authorization'] = `Bearer ${token}`;
-  }
-
-  const config = {
-    method: options.method || 'GET',
-    headers: headers,
-    ...options,
+    ...(token && { 'Authorization': `Bearer ${token}` })
   };
   
-  config.headers = headers;
-
-  try {
-    const response = await fetch(`${API_BASE}${endpoint}`, config);
-    
-    const isJson = response.headers.get('content-type')?.includes('application/json');
-    const data = isJson ? await response.json() : null;
-    
-    if (!response.ok) {
-      console.error(`❌ Backend error on ${endpoint}:`, data);
-      throw new Error(data?.error || data?.message || `Request failed with status ${response.status}`);
-    }
-    
-    return data;
-  } catch (err) {
-    console.error(`🚨 Network error on ${endpoint}:`, err.message);
-    throw err;
+  const response = await fetch(`${API_BASE}${endpoint}`, { ...options, headers });
+  const data = await response.json();
+  
+  if (!response.ok) {
+    throw new Error(data.error || data.message || 'Request failed');
   }
+  return data;
 };
 // Auth endpoints
 export const auth = {
@@ -66,20 +42,31 @@ export const auth = {
   }
 };
 
-// Places endpoints
+// Places endpoints (supports yurt, topchan, and more)
 export const places = {
+  // Get all places with optional filters
   getAll: (params = {}) => {
     const queryParams = new URLSearchParams();
-    if (params.type) queryParams.append('type', params.type);
+    if (params.type) queryParams.append('type', params.type);     // 'yurt' or 'topchan'
     if (params.search) queryParams.append('search', params.search);
     if (params.regionId) queryParams.append('regionId', params.regionId);
     const query = queryParams.toString();
     return request(`/places${query ? `?${query}` : ''}`);
   },
+  
+  // Get yurts only (convenience method)
   getYurts: () => request('/places?type=yurt'),
+  
+  // Get topchans only (convenience method)
   getTopchans: () => request('/places?type=topchan'),
+  
+  // Get single place by ID
   getById: (id) => request(`/places/${id}`),
+  
+  // Get all regions
   getRegions: () => request('/regions'),
+  
+  // Check availability for a place
   getAvailability: (id, from, to) => request(`/places/${id}/availability?from=${from}&to=${to}`)
 };
 
