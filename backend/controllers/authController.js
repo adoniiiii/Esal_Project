@@ -16,7 +16,7 @@ const register = async (req, res, next) => {
       return res.status(400).json({ error: 'Email, password and full name are required' });
     }
     
-    // Check if user exists
+    // Checkтing if user exists
     const existingUser = await pool.query('SELECT id FROM users WHERE email = $1', [email]);
     if (existingUser.rows.length > 0) {
       console.log('User already exists:', email);
