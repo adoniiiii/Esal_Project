@@ -2,7 +2,7 @@
 
 ## Environment Variables
 
-Sensitive data such as API keys, database passwords and JWT secrets must be stored in `.env`.
+Sensitive data must be stored in `.env`.
 
 The `.env` file must not be committed to GitHub.
 
@@ -15,7 +15,6 @@ The website should use authentication for users, service providers and admins.
 Recommended approach:
 
 - JWT-based authentication
-- Protected admin routes
 - Role-based access control
 
 ## User Roles
@@ -42,7 +41,6 @@ Examples:
 
 - Booking form data
 - Login data
-- Package creation data
 - AI assistant prompt
 
 ## API Security
@@ -73,5 +71,4 @@ The repository should not contain:
 - `.env`
 - API keys
 - passwords
-- database dumps
 - private tokens

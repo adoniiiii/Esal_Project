@@ -1,5 +1,5 @@
 // Backend API client
-const API_BASE = 'http://localhost:5000/api';
+const API_BASE = `${import.meta.env.VITE_API_URL}/api`;
 
 // Helper function for all API requests
 const request = async (endpoint, options = {}) => {
