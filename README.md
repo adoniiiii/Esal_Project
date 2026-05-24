@@ -92,22 +92,8 @@ This command builds and starts all containers.
 
 ### 3. Open the application
 
-Frontend:
-
 ```text
 http://localhost:5173
-```
-
-Backend API health check:
-
-```text
-http://localhost:5000/api/health
-```
-
-PostgreSQL runs on:
-
-```text
-localhost:5432
 ```
 
 ### 4. Stop the project
