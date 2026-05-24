@@ -31,7 +31,7 @@ This project can be started locally using Docker Compose. Docker runs three serv
 
 ### Install Docker
 
-Download and install Docker Desktop:
+Download Docker Desktop:
 
 - Windows: install Docker Desktop and enable WSL 2 if required.
 - macOS: install Docker Desktop for Mac.
@@ -124,8 +124,8 @@ If you need to recreate the database from the SQL initialization files, run:
 docker compose down -v
 docker compose up --build
 ```
-
 The database is initialized using SQL files from the `database/` folder.
+
 ---
 
 ## Core MVP Features
