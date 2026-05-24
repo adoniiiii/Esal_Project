@@ -1,5 +1,6 @@
 const pool = require('../database');
 
+ 
 // GET /api/regions
 const getAllRegions = async (req, res, next) => {
   try {
