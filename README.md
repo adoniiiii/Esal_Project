@@ -126,6 +126,8 @@ The project includes several basic security controls for the backend and deploye
 - **SQL injection protection:** PostgreSQL queries use parameterized placeholders such as `$1`, `$2` instead of directly concatenating user input into SQL strings.
 - **XSS protection:** React safely renders user content by default, while security headers and backend input validation reduce XSS risks.
 - **Environment secrets:** database credentials, JWT secret, and AI API keys are stored in environment variables instead of being committed to GitHub.
+  
+  <img width="3364" height="1662" alt="image" src="https://github.com/user-attachments/assets/04e6cd77-16db-4c18-a456-7e159575165b" />
 
 ---
 
