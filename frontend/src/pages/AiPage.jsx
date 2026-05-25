@@ -116,7 +116,7 @@ const AiPage = () => {
         .slice(1)
         .slice(0, -1)
         .map(m => ({ role: m.role, content: m.content }));
-
+      
       const response = await fetch("http://localhost:5000/api/chatbot/message", {
         method: "POST",
         headers: {

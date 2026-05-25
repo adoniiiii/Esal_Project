@@ -28,8 +28,8 @@ const AppNavbar = ({ onLogout }) => (
   <nav className="navbar">
     <div className="logo">
       <div className="logo-icon">🏔️</div>
-      <span className="logo-text-main">E</span>
-      <span className="logo-text-accent">sal</span>
+      <span className="logo-text-main">Es</span>
+      <span className="logo-text-accent">Al</span>
     </div>
     <div className="nav-links">
       <NavLink to="/">Yurts</NavLink>
