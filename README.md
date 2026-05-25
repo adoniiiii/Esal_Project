@@ -116,15 +116,16 @@ The database is initialized using SQL files from the `database/` folder.
 
 ## Security Measures
 
-The backend includes several basic security controls:
+The project includes several basic security controls for the backend and deployed frontend:
 
-- **Rate limiting**: `express-rate-limit` is used to reduce brute-force and DoS-style abuse against API endpoints.
-- **Authentication protection**: login and register routes have stricter request limits.
-- **Security headers**: `helmet` is used to set secure HTTP headers.
-- **Clickjacking protection**: framing is blocked using `X-Frame-Options` and Content Security Policy `frame-ancestors`.
-- **SQL injection protection**: PostgreSQL queries use parameterized placeholders such as `$1`, `$2` instead of string concatenation.
-- **XSS protection**: React renders user content safely by default, and backend input validation is used for user-submitted data.
-- **Environment secrets**: database credentials, JWT secret, and AI API keys are stored in environment variables instead of being committed to GitHub.
+- **Rate limiting:** `express-rate-limit` is used to reduce brute-force attempts and DoS-style abuse against API endpoints.
+- **Authentication protection:** login and register routes have stricter request limits to reduce repeated unauthorized attempts.
+- **Security headers:** `helmet` is used on the backend to set secure HTTP headers.
+- **Clickjacking protection:** framing is blocked using `X-Frame-Options: DENY` and Content Security Policy `frame-ancestors 'none'`.
+- **Frontend security headers:** additional HTTP response headers are configured on Render Static Site, including `Content-Security-Policy`, `X-Content-Type-Options`, `Referrer-Policy`, and `Permissions-Policy`.
+- **SQL injection protection:** PostgreSQL queries use parameterized placeholders such as `$1`, `$2` instead of directly concatenating user input into SQL strings.
+- **XSS protection:** React safely renders user content by default, while security headers and backend input validation reduce XSS risks.
+- **Environment secrets:** database credentials, JWT secret, and AI API keys are stored in environment variables instead of being committed to GitHub.
 
 ---
 
