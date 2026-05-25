@@ -138,7 +138,7 @@ The project includes several basic security controls for the backend and deploye
 | Authentication | Secure registration and login with JWT |
 | Search | Browse yurts and topchans by region, capacity, and price |
 | Booking | Select dates and number of guests, confirm instantly |
-| AI Chatbot | Ask questions in English and get instant answers about any listing |
+| AI Chatbot | Ask questions and get instant answers about any listing |
 
 ---
 
@@ -151,7 +151,7 @@ The project includes several basic security controls for the backend and deploye
 | Database | PostgreSQL |
 | AI Chatbot | Grok API |
 | Authentication | JWT + bcrypt |
-| Deployment | Vercel (frontend) · Railway (backend) |
+| Deployment | Render |
 | CI/CD | GitHub Actions |
 
 ---
