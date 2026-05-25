@@ -114,6 +114,20 @@ The database is initialized using SQL files from the `database/` folder.
 
 ---
 
+## Security Measures
+
+The backend includes several basic security controls:
+
+- **Rate limiting**: `express-rate-limit` is used to reduce brute-force and DoS-style abuse against API endpoints.
+- **Authentication protection**: login and register routes have stricter request limits.
+- **Security headers**: `helmet` is used to set secure HTTP headers.
+- **Clickjacking protection**: framing is blocked using `X-Frame-Options` and Content Security Policy `frame-ancestors`.
+- **SQL injection protection**: PostgreSQL queries use parameterized placeholders such as `$1`, `$2` instead of string concatenation.
+- **XSS protection**: React renders user content safely by default, and backend input validation is used for user-submitted data.
+- **Environment secrets**: database credentials, JWT secret, and AI API keys are stored in environment variables instead of being committed to GitHub.
+
+---
+
 ## Core MVP Features
 
 | Feature | Description |
