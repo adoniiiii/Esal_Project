@@ -1,3 +1,5 @@
+const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
 const express = require('express');
 const cors = require('cors');
 const authRoutes = require('./routes/authRoutes');
@@ -7,7 +9,46 @@ const bookingsRoutes = require('./routes/bookingsRoutes');
 const chatbotRoutes = require('./routes/chatbotRoutes');
 const errorHandler = require('./middleware/errorHandler');
 
+
 const app = express();
+app.disable('x-powered-by');
+app.set('trust proxy', 1);
+
+app.use(helmet({
+  frameguard: { action: 'deny' },
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      frameAncestors: ["'none'"],
+      objectSrc: ["'none'"],
+      baseUri: ["'self'"],
+      scriptSrc: ["'self'"],
+      imgSrc: ["'self'", "data:", "https:"],
+      connectSrc: ["'self'"],
+      styleSrc: ["'self'", "'unsafe-inline'"]
+    }
+  }
+}));
+
+const generalLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 300,
+  message: {
+    error: 'Too many requests. Please try again later.'
+  },
+  standardHeaders: true,
+  legacyHeaders: false
+});
+
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 10,
+  message: {
+    error: 'Too many login/register attempts. Please try again later.'
+  },
+  standardHeaders: true,
+  legacyHeaders: false
+});
 
 const allowedOrigins = (process.env.FRONTEND_URLS || '')
   .split(',')
@@ -46,6 +87,9 @@ app.get('/api/health', (req, res) => {
 });
 
 // API Routes
+app.use('/api', generalLimiter);
+app.use('/api/auth/login', authLimiter);
+app.use('/api/auth/register', authLimiter);
 app.use('/api/auth', authRoutes);
 app.use('/api/regions', regionsRoutes);
 app.use('/api/places', placesRoutes);
