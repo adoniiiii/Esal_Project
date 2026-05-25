@@ -158,9 +158,10 @@ The project includes several basic security controls for the backend and deploye
 
 | | |
 |---|---|
-| Live Site | [[https://esal-website-for-booking.onrender.com/] |
-| Trello Board | [(https://trello.com/b/a7foQ1X6/yurtbook)] |
-| GitHub | [https://github.com/adoniiiii/Esal_Project] |
+| Presentation | https://canva.link/ow3ufqah1akn7nk |
+| Live Site | https://esal-website-for-booking.onrender.com/ |
+| Trello Board | https://trello.com/b/a7foQ1X6/yurtbook |
+| GitHub | https://github.com/adoniiiii/Esal_Project |
 
 ---
 
@@ -171,8 +172,8 @@ The project includes several basic security controls for the backend and deploye
 | Zhansaia Asanova | Project Manager |
 | Gulaiym Nazarova | Backend Developer |
 | Burulai Mamatusmanova | Frontend Developer |
-| Zakhida Nasirdinova | AI Engineer |
-| Aidai Kazakbaeva | DevSecOps |
+| Zakhida Nasiridinova | AI Engineer |
+| Aidai Kazakbaeva | DevSecOps Engineer |
 
 ---
 
