@@ -67,14 +67,19 @@ Always end your reply with a follow-up question to better understand the user's 
   );
 
   const rawText = response.data.choices[0].message.content;
-  console.log('Groq raw response:', rawText);
+console.log('Groq raw response:', rawText);
 
-  try {
-    const clean = rawText.replace(/```json|```/g, '').trim();
-    return JSON.parse(clean);
-  } catch {
-    return { reply: rawText, recommended_yurt_ids: [] };
+try {
+  
+  const jsonMatch = rawText.match(/\{[\s\S]*\}/);
+  if (jsonMatch) {
+    const parsed = JSON.parse(jsonMatch[0]);
+    return parsed;
   }
+  return { reply: rawText, recommended_yurt_ids: [] };
+} catch {
+  return { reply: rawText, recommended_yurt_ids: [] };
+}
 }
 
 async function sendMessage(req, res) {
