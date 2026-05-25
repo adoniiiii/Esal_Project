@@ -18,11 +18,23 @@ const request = async (endpoint, options = {}) => {
   return data;
 };
 // Auth endpoints
+// Auth endpoints
 export const auth = {
-  register: (userData) => request('/auth/register', { 
-    method: 'POST', 
-    body: JSON.stringify(userData) 
-  }),
+  register: async (userData) => {
+    const data = await request('/auth/register', { 
+      method: 'POST', 
+      body: JSON.stringify(userData) 
+    });
+
+    if (data && data.token) {
+      localStorage.setItem('token', data.token);
+      console.log('✅ Token saved to localStorage after register');
+    } else {
+      console.warn('⚠️ No token in register response', data);
+    }
+
+    return data;
+  },
   
   login: async (credentials) => {
     const data = await request('/auth/login', { 
@@ -30,10 +42,9 @@ export const auth = {
       body: JSON.stringify(credentials) 
     });
     
-    // Сохраняем токен в localStorage после успешного входа
     if (data && data.token) {
       localStorage.setItem('token', data.token);
-      console.log('✅ Token saved to localStorage');
+      console.log('✅ Token saved to localStorage after login');
     } else {
       console.warn('⚠️ No token in login response', data);
     }
@@ -41,7 +52,6 @@ export const auth = {
     return data;
   }
 };
-
 // Places endpoints (supports yurt, topchan, and more)
 export const places = {
   // Get all places with optional filters

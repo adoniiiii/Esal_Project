@@ -28,6 +28,7 @@ services:
       DB_NAME: ${DB_NAME}
       JWT_SECRET: ${JWT_SECRET}
       FRONTEND_URLS: ${FRONTEND_URLS}
+      GROK_API_KEY: ${GROK_API_KEY}
     depends_on:
       - db
 
